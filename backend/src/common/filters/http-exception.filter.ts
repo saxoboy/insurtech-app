@@ -24,7 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const detail =
       typeof exceptionResponse === 'string'
         ? exceptionResponse
-        : (exceptionResponse as any)?.message ?? 'Internal server error';
+        : ((exceptionResponse as any)?.message ?? 'Internal server error');
 
     // RFC 9457 - Problem Details
     response.status(status).json({

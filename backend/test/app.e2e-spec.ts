@@ -201,14 +201,12 @@ describe('Insurtech API (e2e)', () => {
       accessToken = loginRes.body.accessToken;
 
       // Create quote
-      const quoteRes = await request(app.getHttpServer())
-        .post('/quotes')
-        .send({
-          insuranceType: 'SALUD',
-          coverage: 'GOLD',
-          age: 45,
-          location: 'EC-GUAYAS',
-        });
+      const quoteRes = await request(app.getHttpServer()).post('/quotes').send({
+        insuranceType: 'SALUD',
+        coverage: 'GOLD',
+        age: 45,
+        location: 'EC-GUAYAS',
+      });
       quoteId = quoteRes.body.id;
     });
 

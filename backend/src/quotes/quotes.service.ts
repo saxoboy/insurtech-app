@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 
@@ -42,7 +46,9 @@ export class QuotesService {
       where: { code: dto.insuranceType },
     });
     if (!insuranceType) {
-      throw new BadRequestException(`Insurance type '${dto.insuranceType}' not found`);
+      throw new BadRequestException(
+        `Insurance type '${dto.insuranceType}' not found`,
+      );
     }
 
     const coverage = await this.prisma.coverage.findFirst({
@@ -52,7 +58,9 @@ export class QuotesService {
       },
     });
     if (!coverage) {
-      throw new BadRequestException(`Coverage '${dto.coverage}' not found for type '${dto.insuranceType}'`);
+      throw new BadRequestException(
+        `Coverage '${dto.coverage}' not found for type '${dto.insuranceType}'`,
+      );
     }
 
     const location = await this.prisma.location.findUnique({
