@@ -23,18 +23,24 @@
     "@nestjs/common": "^11.1.16",
     "@nestjs/core": "^11.1.16",
     "@nestjs/platform-express": "^11.1.16",
+    "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
+    "bcryptjs": "^3.0.3",
+    "pg": "^8.20.0",
     "prisma": "^7.4.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@nestjs/cli": "^11.0.16",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.16",
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.6",
     "@types/jest": "30.0.0",
     "@types/node": "25.4.0",
+    "@types/pg": "^8.18.0",
     "@types/supertest": "^7.2.0",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
@@ -49,7 +55,8 @@
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -67,5 +74,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

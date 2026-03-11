@@ -6,3 +6,97 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ─── Catálogos ───────────────────────────────────────────
+
+model InsuranceType {
+  id        String     @id @default(uuid())
+  code      String     @unique
+  name      String
+  coverages Coverage[]
+
+  @@map("insurance_types")
+}
+
+model Coverage {
+  id              String        @id @default(uuid())
+  code            String
+  name            String
+  insuranceTypeId String        @map("insurance_type_id")
+  insuranceType   InsuranceType @relation(fields: [insuranceTypeId], references: [id])
+
+  @@unique([code, insuranceTypeId])
+  @@map("coverages")
+}
+
+model Location {
+  id   String @id @default(uuid())
+  code String @unique
+  name String
+
+  @@map("locations")
+}
+
+// ─── Usuarios ────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  policies  Policy[]
+
+  @@map("users")
+}
+
+// ─── Cotizaciones ────────────────────────────────────────
+
+enum QuoteStatus {
+  QUOTED
+  ISSUED
+}
+
+model Quote {
+  id                String           @id @default(uuid())
+  status            QuoteStatus      @default(QUOTED)
+  insuranceTypeCode String           @map("insurance_type_code")
+  coverageCode      String           @map("coverage_code")
+  locationCode      String           @map("location_code")
+  age               Int
+  estimatedPremium  Decimal          @map("estimated_premium") @db.Decimal(10, 2)
+  createdAt         DateTime         @default(now()) @map("created_at")
+  breakdown         QuoteBreakdown[]
+  policy            Policy?
+
+  @@map("quotes")
+}
+
+model QuoteBreakdown {
+  id      String  @id @default(uuid())
+  quoteId String  @map("quote_id")
+  concept String
+  amount  Decimal @db.Decimal(10, 2)
+  quote   Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+
+  @@map("quote_breakdowns")
+}
+
+// ─── Pólizas ─────────────────────────────────────────────
+
+enum PolicyStatus {
+  ACTIVE
+  CANCELLED
+}
+
+model Policy {
+  id       String       @id @default(uuid())
+  quoteId  String       @unique @map("quote_id")
+  userId   String       @map("user_id")
+  status   PolicyStatus @default(ACTIVE)
+  issuedAt DateTime     @default(now()) @map("issued_at")
+  quote    Quote        @relation(fields: [quoteId], references: [id])
+  user     User         @relation(fields: [userId], references: [id])
+
+  @@map("policies")
+}
