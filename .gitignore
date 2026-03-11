@@ -54,8 +54,10 @@ next-env.d.ts
 !.yarn/releases
 !.yarn/versions
 
-# Agents/Skills
+# Agents/Skills/AI tools
 .agents/
+.claude/
+.mcp.json
 skills-lock.json
 
 # Docs
