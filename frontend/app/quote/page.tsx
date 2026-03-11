@@ -97,9 +97,15 @@ export default function QuotePage() {
     try {
       const quote = await api.post<{ id: string }>('/quotes', data);
       router.push(`/quote/${quote.id}`);
-    } catch (err) {
-      const apiError = err as ApiError;
-      setError(apiError.detail?.[0] ?? 'Error al crear cotización');
+    } catch (err: unknown) {
+      const apiError = err as Record<string, unknown>;
+      const detail = apiError?.detail;
+      const message = Array.isArray(detail)
+        ? detail[0]
+        : typeof detail === 'string'
+          ? detail
+          : 'Error al crear cotización';
+      setError(message);
     } finally {
       setSubmitting(false);
     }
@@ -133,10 +139,11 @@ export default function QuotePage() {
                   control={control}
                   render={({ field }) => (
                     <Select
-                      value={field.value || null}
+                      value={field.value ?? undefined}
                       onValueChange={(val) => field.onChange(val ?? '')}
                     >
                       <SelectTrigger
+                        id="insuranceType"
                         className="w-full"
                         aria-invalid={!!errors.insuranceType}
                       >
@@ -171,11 +178,12 @@ export default function QuotePage() {
                   control={control}
                   render={({ field }) => (
                     <Select
-                      value={field.value || null}
+                      value={field.value ?? undefined}
                       onValueChange={(val) => field.onChange(val ?? '')}
                       disabled={!selectedInsuranceType}
                     >
                       <SelectTrigger
+                        id="coverage"
                         className="w-full"
                         aria-invalid={!!errors.coverage}
                       >
@@ -246,10 +254,11 @@ export default function QuotePage() {
                   control={control}
                   render={({ field }) => (
                     <Select
-                      value={field.value || null}
+                      value={field.value ?? undefined}
                       onValueChange={(val) => field.onChange(val ?? '')}
                     >
                       <SelectTrigger
+                        id="location"
                         className="w-full"
                         aria-invalid={!!errors.location}
                       >

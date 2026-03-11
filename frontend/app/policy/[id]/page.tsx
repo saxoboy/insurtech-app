@@ -44,7 +44,10 @@ export default function PolicyDetailPage() {
   }, [isAuthenticated, loading, router]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
     api
       .get<PolicyResult>(`/policies/${id}`)
       .then(setPolicy)
@@ -76,16 +79,25 @@ export default function PolicyDetailPage() {
     );
   }
 
+  const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+    ACTIVE: { label: 'Activa', variant: 'default' },
+    CANCELLED: { label: 'Cancelada', variant: 'destructive' },
+    PENDING: { label: 'Pendiente', variant: 'outline' },
+    EXPIRED: { label: 'Expirada', variant: 'secondary' },
+    SUSPENDED: { label: 'Suspendida', variant: 'secondary' },
+  };
+
+  const { label: statusLabel, variant: statusVariant } =
+    statusConfig[policy.status] ?? { label: policy.status, variant: 'secondary' as const };
+
   return (
     <div className="flex justify-center">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Póliza emitida</CardTitle>
-            <Badge
-              variant={policy.status === 'ACTIVE' ? 'default' : 'secondary'}
-            >
-              {policy.status === 'ACTIVE' ? 'Activa' : 'Cancelada'}
+            <Badge variant={statusVariant}>
+              {statusLabel}
             </Badge>
           </div>
           <CardDescription>

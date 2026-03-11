@@ -41,6 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # Agents/Skills/AI tools
-.agents/
-.claude/
-.mcp.json
+/.agent/
+/.agents/
+/.claude/
+/.mcp.json

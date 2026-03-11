@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { api, type ApiError } from '@/lib/api';
+import { api } from '@/lib/api';
 import { useAuthStore } from '@/lib/auth-store';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
@@ -71,9 +71,15 @@ export default function QuoteResultPage() {
         quoteId: id,
       });
       router.push(`/policy/${policy.id}`);
-    } catch (err) {
-      const apiError = err as ApiError;
-      setError(apiError.detail?.[0] ?? 'Error al emitir póliza');
+    } catch (err: unknown) {
+      const apiError = err as Record<string, unknown>;
+      const detail = apiError?.detail;
+      const message = Array.isArray(detail)
+        ? detail[0]
+        : typeof detail === 'string'
+          ? detail
+          : 'Error al emitir póliza';
+      setError(message);
     } finally {
       setIssuing(false);
     }

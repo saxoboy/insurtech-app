@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuthStore, type ApiError } from '@/lib/auth-store';
+import { useAuthStore } from '@/lib/auth-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -45,9 +45,14 @@ export default function LoginPage() {
     try {
       await login(data.email, data.password);
       router.push('/quote');
-    } catch (err) {
-      const apiError = err as ApiError;
-      setError(apiError.detail?.[0] ?? 'Error al iniciar sesión');
+    } catch (err: unknown) {
+      const detail =
+        typeof err === 'object' &&
+        err !== null &&
+        Array.isArray((err as Record<string, unknown>).detail)
+          ? ((err as Record<string, unknown>).detail as string[])[0]
+          : undefined;
+      setError(detail ?? 'Error al iniciar sesión');
     } finally {
       setLoading(false);
     }

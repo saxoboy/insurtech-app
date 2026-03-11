@@ -39,6 +39,14 @@ class ApiClient {
       throw error;
     }
 
+    if (
+      res.status === 204 ||
+      res.headers.get('Content-Length') === '0' ||
+      !res.headers.get('Content-Type')?.includes('application/json')
+    ) {
+      return null as T;
+    }
+
     return res.json();
   }
 
