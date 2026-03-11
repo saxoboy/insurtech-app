@@ -3,6 +3,7 @@ import { Figtree } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Navbar } from '@/components/navbar';
+import { Footer } from '@/components/footer';
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -18,9 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={cn('font-sans', figtree.variable)}>
-      <body className="min-h-dvh antialiased">
+      <body className="min-h-dvh flex flex-col antialiased bg-white">
         <Navbar />
-        <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
+        <main className="flex-1 w-full">{children}</main>
+        <Footer />
       </body>
     </html>
   );

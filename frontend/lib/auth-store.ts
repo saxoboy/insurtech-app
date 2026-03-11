@@ -25,11 +25,19 @@ export const useAuthStore = create<AuthState>((set) => ({
         password,
       });
       localStorage.setItem('accessToken', data.accessToken);
-      set({ token: data.accessToken, isAuthenticated: true, isLoading: false, error: null });
+      set({
+        token: data.accessToken,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      });
     } catch (err) {
-      const detail = typeof err === 'object' && err !== null && Array.isArray((err as Record<string, unknown>).detail)
-        ? ((err as Record<string, unknown>).detail as string[])[0]
-        : 'Error al iniciar sesión';
+      const detail =
+        typeof err === 'object' &&
+        err !== null &&
+        Array.isArray((err as Record<string, unknown>).detail)
+          ? ((err as Record<string, unknown>).detail as string[])[0]
+          : 'Error al iniciar sesión';
       set({ isLoading: false, error: detail, isAuthenticated: false });
       throw err;
     }

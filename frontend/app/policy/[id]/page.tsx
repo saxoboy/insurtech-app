@@ -79,7 +79,13 @@ export default function PolicyDetailPage() {
     );
   }
 
-  const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+  const statusConfig: Record<
+    string,
+    {
+      label: string;
+      variant: 'default' | 'secondary' | 'destructive' | 'outline';
+    }
+  > = {
     ACTIVE: { label: 'Activa', variant: 'default' },
     CANCELLED: { label: 'Cancelada', variant: 'destructive' },
     PENDING: { label: 'Pendiente', variant: 'outline' },
@@ -87,8 +93,9 @@ export default function PolicyDetailPage() {
     SUSPENDED: { label: 'Suspendida', variant: 'secondary' },
   };
 
-  const { label: statusLabel, variant: statusVariant } =
-    statusConfig[policy.status] ?? { label: policy.status, variant: 'secondary' as const };
+  const { label: statusLabel, variant: statusVariant } = statusConfig[
+    policy.status
+  ] ?? { label: policy.status, variant: 'secondary' as const };
 
   return (
     <div className="flex justify-center">
@@ -96,9 +103,7 @@ export default function PolicyDetailPage() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Póliza emitida</CardTitle>
-            <Badge variant={statusVariant}>
-              {statusLabel}
-            </Badge>
+            <Badge variant={statusVariant}>{statusLabel}</Badge>
           </div>
           <CardDescription>
             Emitida el{' '}
