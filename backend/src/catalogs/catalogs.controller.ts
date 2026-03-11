@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, BadRequestException } from '@nestjs/common';
 import { CatalogsService } from './catalogs.service';
 
 @Controller('catalogs')
@@ -12,6 +12,11 @@ export class CatalogsController {
 
   @Get('coverages')
   getCoverages(@Query('insuranceType') insuranceType: string) {
+    if (!insuranceType) {
+      throw new BadRequestException(
+        'insuranceType query parameter is required',
+      );
+    }
     return this.catalogsService.getCoverages(insuranceType);
   }
 

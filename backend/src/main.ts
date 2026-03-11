@@ -20,7 +20,12 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   // CORS
-  app.enableCors();
+  const corsOrigin = process.env.CORS_ORIGIN;
+  app.enableCors({
+    origin: corsOrigin
+      ? corsOrigin.split(',').map((o) => o.trim())
+      : ['http://localhost:3000', 'http://localhost:3001'],
+  });
 
   // Swagger
   const config = new DocumentBuilder()

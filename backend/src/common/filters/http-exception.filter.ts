@@ -27,11 +27,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
         : ((exceptionResponse as any)?.message ?? 'Internal server error');
 
     // RFC 9457 - Problem Details
-    response.status(status).json({
-      type: `https://httpstatuses.com/${status}`,
-      title: HttpStatus[status] ?? 'Error',
-      status,
-      detail: Array.isArray(detail) ? detail : [detail],
-    });
+    response
+      .status(status)
+      .type('application/problem+json')
+      .send(
+        JSON.stringify({
+          type: `https://httpstatuses.com/${status}`,
+          title: HttpStatus[status] ?? 'Error',
+          status,
+          detail: Array.isArray(detail) ? detail : [detail],
+        }),
+      );
   }
 }

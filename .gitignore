@@ -60,5 +60,6 @@ next-env.d.ts
 .mcp.json
 skills-lock.json
 
-# Docs
-docs/
+# Docs (generated artifacts only)
+docs/build/
+docs/.generated/

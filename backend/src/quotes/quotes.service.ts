@@ -71,10 +71,25 @@ export class QuotesService {
     }
 
     // Calcular prima
-    const base = BASE_PREMIUM[dto.insuranceType] ?? 50;
+    const base = BASE_PREMIUM[dto.insuranceType];
+    if (base === undefined) {
+      throw new BadRequestException(
+        `Unknown insurance type factor: '${dto.insuranceType}'`,
+      );
+    }
     const ageFactor = getAgeFactor(dto.age);
-    const locationFactor = LOCATION_FACTOR[dto.location] ?? 5;
-    const coverageFactor = COVERAGE_FACTOR[dto.coverage] ?? 0;
+    const locationFactor = LOCATION_FACTOR[dto.location];
+    if (locationFactor === undefined) {
+      throw new BadRequestException(
+        `Unknown location factor: '${dto.location}'`,
+      );
+    }
+    const coverageFactor = COVERAGE_FACTOR[dto.coverage];
+    if (coverageFactor === undefined) {
+      throw new BadRequestException(
+        `Unknown coverage factor: '${dto.coverage}'`,
+      );
+    }
     const estimatedPremium = base + ageFactor + locationFactor + coverageFactor;
 
     // Crear quote con breakdown

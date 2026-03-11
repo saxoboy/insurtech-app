@@ -167,7 +167,7 @@ describe('Insurtech API (e2e)', () => {
     it('POST /auth/login → 401 for invalid password', async () => {
       await request(app.getHttpServer())
         .post('/auth/login')
-        .send({ email: 'demouser@correo.com', password: 'wrong' })
+        .send({ email: 'demouser@correo.com', password: 'wrongpass' })
         .expect(401);
     });
 
@@ -198,6 +198,8 @@ describe('Insurtech API (e2e)', () => {
       const loginRes = await request(app.getHttpServer())
         .post('/auth/login')
         .send({ email: 'demouser@correo.com', password: 'password' });
+      expect(loginRes.status).toBe(201);
+      expect(loginRes.body.accessToken).toBeDefined();
       accessToken = loginRes.body.accessToken;
 
       // Create quote
@@ -207,6 +209,8 @@ describe('Insurtech API (e2e)', () => {
         age: 45,
         location: 'EC-GUAYAS',
       });
+      expect(quoteRes.status).toBe(201);
+      expect(quoteRes.body.id).toBeDefined();
       quoteId = quoteRes.body.id;
     });
 

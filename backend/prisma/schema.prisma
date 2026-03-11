@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ─── Catálogos ───────────────────────────────────────────
@@ -57,6 +58,10 @@ enum QuoteStatus {
   ISSUED
 }
 
+/// Quote stores catalog codes as denormalized snapshot values.
+/// This is intentional: codes are validated against catalogs at creation time
+/// (see QuotesService.create) and then persisted as immutable references so
+/// the quote remains accurate even if catalog entries change later.
 model Quote {
   id                String           @id @default(uuid())
   status            QuoteStatus      @default(QUOTED)

@@ -22,7 +22,7 @@ export class PoliciesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.policiesService.findOne(id);
+  findOne(@Param('id') id: string, @Request() req: any) {
+    return this.policiesService.findOne(id, req.user.id);
   }
 }
