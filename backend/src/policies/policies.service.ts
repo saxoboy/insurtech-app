@@ -52,6 +52,7 @@ export class PoliciesService {
   async findOne(id: string, userId: string) {
     const policy = await this.prisma.policy.findUnique({
       where: { id },
+      include: { quote: true },
     });
 
     if (!policy) {
@@ -65,12 +66,31 @@ export class PoliciesService {
     return this.formatPolicy(policy);
   }
 
+  async findAllByUser(userId: string) {
+    const policies = await this.prisma.policy.findMany({
+      where: { userId },
+      include: { quote: true },
+      orderBy: { issuedAt: 'desc' },
+    });
+
+    return {
+      items: policies.map((p) => this.formatPolicy(p)),
+    };
+  }
+
   private formatPolicy(policy: any) {
     return {
       id: policy.id,
       quoteId: policy.quoteId,
       status: policy.status,
       issuedAt: policy.issuedAt,
+      quote: policy.quote
+        ? {
+            insuranceTypeCode: policy.quote.insuranceTypeCode,
+            coverageCode: policy.quote.coverageCode,
+            estimatedPremium: policy.quote.estimatedPremium,
+          }
+        : undefined,
     };
   }
 }

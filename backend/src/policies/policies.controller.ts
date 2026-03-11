@@ -21,6 +21,11 @@ export class PoliciesController {
     return this.policiesService.create(dto, req.user.id);
   }
 
+  @Get()
+  findAll(@Request() req: any) {
+    return this.policiesService.findAllByUser(req.user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string, @Request() req: any) {
     return this.policiesService.findOne(id, req.user.id);
