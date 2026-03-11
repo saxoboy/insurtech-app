@@ -24,7 +24,9 @@ export class PoliciesService {
       }
 
       if (quote.status !== 'QUOTED') {
-        throw new BadRequestException('Quote has already been issued');
+        throw new BadRequestException(
+          `Quote is not in a valid state for this operation (current: ${quote.status})`,
+        );
       }
 
       if (quote.policy) {
