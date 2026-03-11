@@ -49,12 +49,12 @@ export default function RegisterPage() {
     } catch (err) {
       const detail =
         typeof err === 'object' &&
-        err !== null &&
-        Array.isArray((err as Record<string, unknown>).detail)
+          err !== null &&
+          Array.isArray((err as Record<string, unknown>).detail)
           ? ((err as Record<string, unknown>).detail as string[])[0]
           : typeof err === 'object' &&
-              err !== null &&
-              typeof (err as Record<string, unknown>).detail === 'string'
+            err !== null &&
+            typeof (err as Record<string, unknown>).detail === 'string'
             ? ((err as Record<string, unknown>).detail as string)
             : 'Error al registrar la cuenta';
       setErrorText(detail);
@@ -99,7 +99,7 @@ export default function RegisterPage() {
                   onChange={(e) => setName(e.target.value)}
                   className="h-11 bg-slate-50 border-slate-200"
                   required
-                  min={2}
+                  minLength={2}
                 />
               </div>
 

@@ -44,13 +44,15 @@ export default function HomePage() {
             >
               Comenzar cotización <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-xl px-8 h-12 bg-white/70 border-white/50 backdrop-blur text-slate-800 hover:bg-white transition-all shadow-sm"
-            >
-              Ver coberturas
-            </Button>
+            <Link href="/quote">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-xl w-full sm:w-auto px-8 h-12 bg-white/70 border-white/50 backdrop-blur text-slate-800 hover:bg-white transition-all shadow-sm"
+              >
+                Ver coberturas
+              </Button>
+            </Link>
           </div>
 
           <div className="flex items-center gap-3 mt-6">
@@ -103,7 +105,7 @@ export default function HomePage() {
               disponible las 24 horas del día.
             </p>
             <Link
-              href="#"
+              href="/quote"
               className="inline-flex items-center text-sm font-bold text-[#51a8ff] hover:text-blue-600 transition-colors mt-2"
             >
               Saber más{' '}
@@ -122,7 +124,7 @@ export default function HomePage() {
               médica integral para toda tu familia.
             </p>
             <Link
-              href="#"
+              href="/quote"
               className="inline-flex items-center text-sm font-bold text-[#51a8ff] hover:text-blue-600 transition-colors mt-2"
             >
               Saber más{' '}
@@ -141,7 +143,7 @@ export default function HomePage() {
               naturales con pólizas personalizadas.
             </p>
             <Link
-              href="#"
+              href="/quote"
               className="inline-flex items-center text-sm font-bold text-[#51a8ff] hover:text-blue-600 transition-colors mt-2"
             >
               Saber más{' '}

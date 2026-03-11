@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { api, type ApiError } from '@/lib/api';
+import { api } from '@/lib/api';
 import { quoteSchema, type QuoteFormData } from '@/lib/schemas/quote-schema';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

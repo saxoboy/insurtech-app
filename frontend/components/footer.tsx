@@ -40,7 +40,7 @@ export function Footer() {
         </nav>
 
         <div className="text-sm font-medium text-slate-400">
-          © 2024 Insurtech. Todos los derechos reservados.
+          © {new Date().getFullYear()} Insurtech. Todos los derechos reservados.
         </div>
       </div>
     </footer>

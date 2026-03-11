@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { ShieldCheck, Bell, User } from 'lucide-react';
 import { useAuthStore } from '@/lib/auth-store';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ShieldCheck, Bell, User } from 'lucide-react';
 
 export function Navbar() {
   const pathname = usePathname();

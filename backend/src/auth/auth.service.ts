@@ -17,36 +17,36 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    const existing = await this.prisma.user.findUnique({
-      where: { email: dto.email },
-    });
-
-    if (existing) {
-      throw new ConflictException('El correo ya está registrado');
-    }
-
     const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const emailLower = dto.email.toLowerCase();
 
-    const user = await this.prisma.user.create({
-      data: {
-        email: dto.email,
-        password: hashedPassword,
-        name: dto.name,
-      },
-    });
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          email: emailLower,
+          password: hashedPassword,
+          name: dto.name,
+        },
+      });
 
-    const payload = { sub: user.id, email: user.email };
-    const accessToken = this.jwtService.sign(payload);
+      const payload = { sub: user.id, email: user.email };
+      const accessToken = this.jwtService.sign(payload);
 
-    return {
-      accessToken,
-      tokenType: 'Bearer',
-    };
+      return {
+        accessToken,
+        tokenType: 'Bearer',
+      };
+    } catch (error: any) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('Email already registered');
+      }
+      throw error;
+    }
   }
 
   async login(dto: LoginDto) {
     const user = await this.prisma.user.findUnique({
-      where: { email: dto.email },
+      where: { email: dto.email.toLowerCase() },
     });
 
     if (!user) {

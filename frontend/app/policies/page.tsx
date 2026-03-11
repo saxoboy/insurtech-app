@@ -42,6 +42,13 @@ const TYPE_NAMES: Record<string, string> = {
   HOGAR: 'Seguro de Hogar',
 };
 
+const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
+  ACTIVE: { label: 'Activa', className: 'text-emerald-600 bg-emerald-50' },
+  CANCELLED: { label: 'Cancelada', className: 'text-red-600 bg-red-50' },
+  EXPIRED: { label: 'Expirada', className: 'text-slate-600 bg-slate-100' },
+  PENDING: { label: 'Pendiente', className: 'text-amber-600 bg-amber-50' },
+};
+
 function formatDate(isoString: string) {
   const date = new Date(isoString);
   return new Intl.DateTimeFormat('es-MX', {
@@ -71,23 +78,30 @@ export default function PoliciesListPage() {
       return;
     }
 
-    if (isAuthenticated) {
-      setLoading(true);
-      api
-        .get<{ items: Policy[] }>('/policies')
-        .then((res) => {
-          setPolicies(res.items || []);
-          setError(null);
-        })
-        .catch(() => {
-          setError(
-            'No pudimos cargar tus pólizas. Por favor, intenta de nuevo.',
-          );
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
+    let isCancelled = false;
+    setLoading(true);
+
+    api
+      .get<{ items: Policy[] }>('/policies')
+      .then((res) => {
+        if (isCancelled) return;
+        setPolicies(res.items || []);
+        setError(null);
+      })
+      .catch(() => {
+        if (isCancelled) return;
+        setError(
+          'No pudimos cargar tus pólizas. Por favor, intenta de nuevo.',
+        );
+      })
+      .finally(() => {
+        if (isCancelled) return;
+        setLoading(false);
+      });
+
+    return () => {
+      isCancelled = true;
+    };
   }, [isAuthenticated, mounted]);
 
   // Pantalla de carga mientras se monta el componente
@@ -173,6 +187,11 @@ export default function PoliciesListPage() {
               const typeCode = policy.quote?.insuranceTypeCode || 'AUTO';
               const Icon = TYPE_ICONS[typeCode] || FileText;
 
+              const statusConfig = STATUS_CONFIG[policy.status] || {
+                label: policy.status,
+                className: 'text-slate-600 bg-slate-100'
+              };
+
               return (
                 <Card
                   key={policy.id}
@@ -187,10 +206,8 @@ export default function PoliciesListPage() {
                         <h4 className="font-bold text-slate-800 leading-tight">
                           {TYPE_NAMES[typeCode] || typeCode}
                         </h4>
-                        <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-1">
-                          {policy.status === 'ACTIVE'
-                            ? 'Activa'
-                            : policy.status}
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full inline-block mt-1 ${statusConfig.className}`}>
+                          {statusConfig.label}
                         </span>
                       </div>
                     </div>
