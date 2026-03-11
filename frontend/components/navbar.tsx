@@ -13,14 +13,17 @@ export function Navbar() {
   const router = useRouter();
   const { isAuthenticated, logout, hydrate } = useAuthStore();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(pathname);
 
   useEffect(() => {
     hydrate();
   }, [hydrate]);
 
-  useEffect(() => {
+  // Close mobile menu on navigation (derived state during render)
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     setMenuOpen(false);
-  }, [pathname]);
+  }
 
   const handleLogout = () => {
     logout();

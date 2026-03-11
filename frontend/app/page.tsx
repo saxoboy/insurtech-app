@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { ArrowRight, Car, HeartPulse, Home } from 'lucide-react';
