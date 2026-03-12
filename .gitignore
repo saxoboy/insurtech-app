@@ -53,3 +53,13 @@ next-env.d.ts
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+
+# Agents/Skills/AI tools
+.agents/
+.claude/
+.mcp.json
+skills-lock.json
+
+# Docs (generated artifacts only)
+docs/build/
+docs/.generated/
