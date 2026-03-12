@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { api, type ApiError } from './api';
+import { loginAction } from './actions/auth';
+import type { ApiError } from './api';
 
 interface AuthState {
   token: string | null;
@@ -22,11 +23,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (email: string, password: string) => {
     set({ isLoading: true, error: null });
     try {
-      const data = await api.post<{ accessToken: string }>('/auth/login', {
-        email,
-        password,
-      });
+      const data = await loginAction(email, password);
       localStorage.setItem('accessToken', data.accessToken);
+      document.cookie = `accessToken=${data.accessToken}; path=/; SameSite=Strict`;
       set({
         token: data.accessToken,
         isAuthenticated: true,
@@ -47,6 +46,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: () => {
     localStorage.removeItem('accessToken');
+    document.cookie =
+      'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict';
     set({ token: null, isAuthenticated: false });
   },
 

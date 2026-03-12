@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
-import { api } from '@/lib/api';
+import { getPolicies, type Policy } from '@/lib/actions/policies';
 import { useAuthStore } from '@/lib/auth-store';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -17,18 +17,6 @@ import {
   Car,
   HeartPulse,
 } from 'lucide-react';
-
-interface Policy {
-  id: string;
-  quoteId: string;
-  status: string;
-  issuedAt: string;
-  quote?: {
-    insuranceTypeCode: string;
-    coverageCode: string;
-    estimatedPremium: string;
-  };
-}
 
 const TYPE_ICONS: Record<string, React.ElementType> = {
   AUTO: Car,
@@ -72,8 +60,7 @@ export function PoliciesList() {
 
     let isCancelled = false;
 
-    api
-      .get<{ items: Policy[] }>('/policies')
+    getPolicies()
       .then((res) => {
         if (isCancelled) return;
         setPolicies(res.items || []);

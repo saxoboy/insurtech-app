@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { api } from '@/lib/api';
 import { useAuthStore } from '@/lib/auth-store';
 import { BENEFITS } from '@/lib/premium-calculator';
+import { getQuote, type QuoteResult } from '@/lib/actions/quotes';
+import { issuePolicy } from '@/lib/actions/policies';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -35,20 +36,6 @@ import {
   User,
   Shield,
 } from 'lucide-react';
-
-interface QuoteResult {
-  id: string;
-  status: string;
-  inputs: {
-    insuranceType: string;
-    coverage: string;
-    location: string;
-    age: number;
-  };
-  estimatedPremium: number;
-  breakdown: { concept: string; amount: number }[];
-  createdAt: string;
-}
 
 const TYPE_ICONS: Record<string, React.ElementType> = {
   AUTO: Car,
@@ -90,8 +77,7 @@ export function QuoteDetail({ id }: { id: string }) {
   }, [hydrate]);
 
   useEffect(() => {
-    api
-      .get<QuoteResult>(`/quotes/${id}`)
+    getQuote(id)
       .then(setQuote)
       .catch(() => setError('No se pudo cargar la cotización'))
       .finally(() => setLoading(false));
@@ -101,9 +87,7 @@ export function QuoteDetail({ id }: { id: string }) {
     setIssuing(true);
     setError(null);
     try {
-      const policy = await api.post<{ id: string }>('/policies', {
-        quoteId: id,
-      });
+      const policy = await issuePolicy(id);
       router.push(`/policy/${policy.id}`);
     } catch (err: unknown) {
       const apiError = err as Record<string, unknown>;

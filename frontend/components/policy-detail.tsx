@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { api } from '@/lib/api';
 import { useAuthStore } from '@/lib/auth-store';
 import { BENEFITS } from '@/lib/premium-calculator';
+import { getPolicy } from '@/lib/actions/policies';
+import { getQuote } from '@/lib/actions/quotes';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -27,24 +28,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-interface PolicyResult {
-  id: string;
-  quoteId: string;
-  status: string;
-  issuedAt: string;
-}
-
-interface QuoteResult {
-  id: string;
-  inputs: {
-    insuranceType: string;
-    coverage: string;
-    location: string;
-    age: number;
-  };
-  estimatedPremium: number;
-  breakdown: { concept: string; amount: number }[];
-}
+import type { Policy as PolicyResult } from '@/lib/actions/policies';
+import type { QuoteResult } from '@/lib/actions/quotes';
 
 const TYPE_ICONS: Record<string, React.ElementType> = {
   AUTO: Car,
@@ -98,13 +83,11 @@ export function PolicyDetail({ id }: { id: string }) {
       router.push('/login');
       return;
     }
-    api
-      .get<PolicyResult>(`/policies/${id}`)
+    getPolicy(id)
       .then((policyData) => {
         setPolicy(policyData);
         // Fetch associated quote for full details
-        return api
-          .get<QuoteResult>(`/quotes/${policyData.quoteId}`)
+        return getQuote(policyData.quoteId)
           .then(setQuote)
           .catch(() => {
             // Quote fetch is optional — policy still shows

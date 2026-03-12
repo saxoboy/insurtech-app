@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { api } from '@/lib/api';
+import { registerAction } from '@/lib/actions/auth';
 import {
   Asterisk,
   Mail,
@@ -51,10 +51,7 @@ export function RegisterForm() {
     setErrorText(null);
 
     try {
-      const data = await api.post<{ accessToken: string }>(
-        '/auth/register',
-        formData,
-      );
+      const data = await registerAction(formData);
 
       localStorage.setItem('accessToken', data.accessToken);
       useAuthStore.getState().hydrate();

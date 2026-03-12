@@ -4,8 +4,14 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { api } from '@/lib/api';
 import { quoteSchema, type QuoteFormData } from '@/lib/schemas/quote-schema';
+import {
+  getInsuranceTypes,
+  getLocations,
+  getCoverages,
+  type CatalogItem,
+} from '@/lib/actions/catalogs';
+import { createQuote } from '@/lib/actions/quotes';
 import { BENEFITS } from '@/lib/premium-calculator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,11 +33,6 @@ import {
   ArrowRight,
   CheckCircle2,
 } from 'lucide-react';
-
-interface CatalogItem {
-  code: string;
-  name: string;
-}
 
 const TYPE_NAMES: Record<string, string> = {
   AUTO: 'Seguro de Auto',
@@ -93,10 +94,7 @@ export function QuoteForm() {
 
   // Cargar catálogos iniciales en paralelo
   useEffect(() => {
-    Promise.all([
-      api.get<{ items: CatalogItem[] }>('/catalogs/insurance-types'),
-      api.get<{ items: CatalogItem[] }>('/catalogs/locations'),
-    ])
+    Promise.all([getInsuranceTypes(), getLocations()])
       .then(([typesRes, locationsRes]) => {
         setInsuranceTypes(typesRes.items);
         setLocations(locationsRes.items);
@@ -114,10 +112,7 @@ export function QuoteForm() {
 
     setLoadingCoverages(true);
     setValue('coverage', '');
-    api
-      .get<{ items: CatalogItem[] }>(
-        `/catalogs/coverages?insuranceType=${selectedInsuranceType}`,
-      )
+    getCoverages(selectedInsuranceType)
       .then((res) => setCoverages(res.items))
       .catch(() => setCoverages([]))
       .finally(() => setLoadingCoverages(false));
@@ -127,7 +122,7 @@ export function QuoteForm() {
     setError(null);
     setSubmitting(true);
     try {
-      const quote = await api.post<{ id: string }>('/quotes', data);
+      const quote = await createQuote(data);
       router.push(`/quote/${quote.id}`);
     } catch (err: unknown) {
       const apiError = err as Record<string, unknown>;
