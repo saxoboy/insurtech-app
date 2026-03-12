@@ -4,15 +4,19 @@ import {
   ConflictException,
   BadRequestException,
   ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePolicyDto } from './dto/create-policy.dto';
 
 @Injectable()
 export class PoliciesService {
+  private readonly logger = new Logger(PoliciesService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreatePolicyDto, userId: string) {
+    this.logger.log(`Issuing policy: quoteId=${dto.quoteId} userId=${userId}`);
     const policy = await this.prisma.$transaction(async (tx) => {
       const quote = await tx.quote.findUnique({
         where: { id: dto.quoteId },
@@ -46,6 +50,7 @@ export class PoliciesService {
       });
     });
 
+    this.logger.log(`Policy issued: id=${policy.id} quoteId=${dto.quoteId}`);
     return this.formatPolicy(policy);
   }
 

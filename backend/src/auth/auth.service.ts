@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
+  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
@@ -11,12 +12,15 @@ import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
 
   async register(dto: RegisterDto) {
+    this.logger.log(`Registering user: email=${dto.email}`);
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     const emailLower = dto.email.toLowerCase();
 
@@ -45,6 +49,7 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
+    this.logger.log(`Login attempt: email=${dto.email}`);
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email.toLowerCase() },
     });
@@ -65,7 +70,7 @@ export class AuthService {
 
     const payload = { sub: user.id, email: user.email };
     const accessToken = this.jwtService.sign(payload);
-
+    this.logger.log(`Login successful: email=${dto.email}`);
     return {
       accessToken,
       tokenType: 'Bearer',

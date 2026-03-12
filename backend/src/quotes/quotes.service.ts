@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateQuoteDto } from './dto/create-quote.dto';
@@ -38,9 +39,14 @@ function getAgeFactor(age: number): number {
 
 @Injectable()
 export class QuotesService {
+  private readonly logger = new Logger(QuotesService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateQuoteDto) {
+    this.logger.log(
+      `Creating quote: type=${dto.insuranceType} coverage=${dto.coverage} age=${dto.age} location=${dto.location}`,
+    );
     // Validar que los códigos de catálogo existan
     const insuranceType = await this.prisma.insuranceType.findUnique({
       where: { code: dto.insuranceType },
@@ -112,10 +118,14 @@ export class QuotesService {
       include: { breakdown: true },
     });
 
+    this.logger.log(
+      `Quote created: id=${quote.id} premium=${estimatedPremium}`,
+    );
     return this.formatQuote(quote);
   }
 
   async findOne(id: string) {
+    this.logger.debug(`Fetching quote: id=${id}`);
     const quote = await this.prisma.quote.findUnique({
       where: { id },
       include: { breakdown: true },
