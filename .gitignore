@@ -44,6 +44,9 @@ next-env.d.ts
 # Vercel
 .vercel
 
+# Docs
+docs/
+
 # Misc
 *.pem
 .pnp
@@ -61,6 +64,5 @@ next-env.d.ts
 skills-lock.json
 
 # Docs (generated artifacts only)
-docs/
 docs/build/
 docs/.generated/
