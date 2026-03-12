@@ -2,7 +2,7 @@
 
 Plataforma fullstack de seguros con flujo completo: **Catálogos → Cotización → Login → Emisión de Póliza → Consulta de Póliza**.
 
-## Ruta Elegida
+## Rol
 
 **Fullstack** (Frontend + Backend integrados)
 

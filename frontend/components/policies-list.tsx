@@ -53,7 +53,11 @@ export function PoliciesList() {
   const [policies, setPolicies] = useState<Policy[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     if (!mounted || !isAuthenticated) return;
@@ -68,9 +72,7 @@ export function PoliciesList() {
       })
       .catch(() => {
         if (isCancelled) return;
-        setError(
-          'No pudimos cargar tus pólizas. Por favor, intenta de nuevo.',
-        );
+        setError('No pudimos cargar tus pólizas. Por favor, intenta de nuevo.');
       })
       .finally(() => {
         if (isCancelled) return;
@@ -171,7 +173,7 @@ export function PoliciesList() {
 
               const statusConfig = STATUS_CONFIG[policy.status] || {
                 label: policy.status,
-                className: 'text-slate-600 bg-slate-100'
+                className: 'text-slate-600 bg-slate-100',
               };
 
               return (
@@ -188,7 +190,9 @@ export function PoliciesList() {
                         <h4 className="font-bold text-slate-800 leading-tight">
                           {TYPE_NAMES[typeCode] || typeCode}
                         </h4>
-                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full inline-block mt-1 ${statusConfig.className}`}>
+                        <span
+                          className={`text-xs font-semibold px-2 py-0.5 rounded-full inline-block mt-1 ${statusConfig.className}`}
+                        >
                           {statusConfig.label}
                         </span>
                       </div>

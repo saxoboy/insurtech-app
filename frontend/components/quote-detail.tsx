@@ -355,9 +355,7 @@ export function QuoteDetail({ id }: { id: string }) {
                             </DialogDescription>
                           </DialogHeader>
                           <DialogFooter>
-                            <DialogClose
-                              render={<Button variant="outline" />}
-                            >
+                            <DialogClose render={<Button variant="outline" />}>
                               Cancelar
                             </DialogClose>
                             <Button
@@ -378,8 +376,7 @@ export function QuoteDetail({ id }: { id: string }) {
                         <Link
                           href="/login"
                           className={buttonVariants({
-                            className:
-                              'w-full bg-[#409cf0] hover:bg-blue-500',
+                            className: 'w-full bg-[#409cf0] hover:bg-blue-500',
                           })}
                         >
                           Iniciar sesión

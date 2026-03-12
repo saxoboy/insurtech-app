@@ -85,12 +85,8 @@ export function QuoteForm() {
   const insuranceTypeName =
     insuranceTypes.find((t) => t.code === selectedInsuranceType)?.name ??
     TYPE_NAMES[selectedInsuranceType];
-  const coverageName = coverages.find(
-    (c) => c.code === selectedCoverage,
-  )?.name;
-  const locationName = locations.find(
-    (l) => l.code === selectedLocation,
-  )?.name;
+  const coverageName = coverages.find((c) => c.code === selectedCoverage)?.name;
+  const locationName = locations.find((l) => l.code === selectedLocation)?.name;
 
   // Cargar catálogos iniciales en paralelo
   useEffect(() => {
@@ -182,9 +178,7 @@ export function QuoteForm() {
                           render={({ field }) => (
                             <Select
                               value={field.value ?? undefined}
-                              onValueChange={(val) =>
-                                field.onChange(val ?? '')
-                              }
+                              onValueChange={(val) => field.onChange(val ?? '')}
                             >
                               <SelectTrigger
                                 id="insuranceType"
@@ -223,9 +217,7 @@ export function QuoteForm() {
                           render={({ field }) => (
                             <Select
                               value={field.value ?? undefined}
-                              onValueChange={(val) =>
-                                field.onChange(val ?? '')
-                              }
+                              onValueChange={(val) => field.onChange(val ?? '')}
                               disabled={!selectedInsuranceType}
                             >
                               <SelectTrigger
@@ -306,9 +298,7 @@ export function QuoteForm() {
                           render={({ field }) => (
                             <Select
                               value={field.value ?? undefined}
-                              onValueChange={(val) =>
-                                field.onChange(val ?? '')
-                              }
+                              onValueChange={(val) => field.onChange(val ?? '')}
                             >
                               <SelectTrigger
                                 id="location"
@@ -463,7 +453,6 @@ export function QuoteForm() {
                           </div>
                         )}
                       </div>
-
                     </>
                   ) : (
                     <div className="py-8 text-center">
@@ -495,7 +484,6 @@ export function QuoteForm() {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>

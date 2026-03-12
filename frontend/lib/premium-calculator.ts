@@ -48,7 +48,12 @@ export function calculatePremium(
   const coverageFactor = COVERAGE_FACTOR[coverage];
   const locationFactor = LOCATION_FACTOR[location];
 
-  if (base == null || coverageFactor == null || locationFactor == null || !age) {
+  if (
+    base == null ||
+    coverageFactor == null ||
+    locationFactor == null ||
+    !age
+  ) {
     return null;
   }
 
