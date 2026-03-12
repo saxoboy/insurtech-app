@@ -33,7 +33,7 @@ describe('quoteSchema', () => {
     });
 
     it('fails when insuranceType is missing', () => {
-      const { insuranceType, ...rest } = validData;
+      const { insuranceType: _insuranceType, ...rest } = validData;
       const result = quoteSchema.safeParse(rest);
       expect(result.success).toBe(false);
     });
@@ -46,7 +46,7 @@ describe('quoteSchema', () => {
     });
 
     it('fails when coverage is missing', () => {
-      const { coverage, ...rest } = validData;
+      const { coverage: _coverage, ...rest } = validData;
       const result = quoteSchema.safeParse(rest);
       expect(result.success).toBe(false);
     });
@@ -74,7 +74,7 @@ describe('quoteSchema', () => {
     });
 
     it('fails when age is missing', () => {
-      const { age, ...rest } = validData;
+      const { age: _age, ...rest } = validData;
       const result = quoteSchema.safeParse(rest);
       expect(result.success).toBe(false);
     });
@@ -87,7 +87,7 @@ describe('quoteSchema', () => {
     });
 
     it('fails when location is missing', () => {
-      const { location, ...rest } = validData;
+      const { location: _location, ...rest } = validData;
       const result = quoteSchema.safeParse(rest);
       expect(result.success).toBe(false);
     });

@@ -46,7 +46,7 @@ function stubCatalogLookups(
 }
 
 function stubQuoteCreate(prisma: any) {
-  prisma.quote.create.mockImplementation(({ data, include }: any) => {
+  prisma.quote.create.mockImplementation(({ data }: any) => {
     const breakdown = data.breakdown?.create ?? [];
     return Promise.resolve({
       id: 'quote-uuid',

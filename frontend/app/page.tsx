@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { ArrowRight, Car, HeartPulse, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -62,23 +63,29 @@ export default function HomePage() {
           <div className="flex items-center gap-3 mt-6">
             <div className="flex -space-x-3">
               <div className="h-10 w-10 rounded-full border-2 border-[#eae4d5] bg-blue-100 flex justify-center items-center text-xs overflow-hidden shadow-sm">
-                <img
+                <Image
                   src="https://i.pravatar.cc/100?img=47"
                   alt="Client 1"
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="h-10 w-10 rounded-full border-2 border-[#eae4d5] bg-green-100 flex justify-center items-center text-xs overflow-hidden shadow-sm">
-                <img
+                <Image
                   src="https://i.pravatar.cc/100?img=33"
                   alt="Client 2"
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="h-10 w-10 rounded-full border-2 border-[#eae4d5] bg-pink-100 flex justify-center items-center text-xs overflow-hidden shadow-sm">
-                <img
+                <Image
                   src="https://i.pravatar.cc/100?img=12"
                   alt="Client 3"
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover"
                 />
               </div>
