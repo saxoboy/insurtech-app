@@ -260,31 +260,31 @@ CI pipeline pasa (lint + tests + build). README permite clonar y levantar el pro
 ## Criterios de Aceptación (Checklist Final)
 
 ### Generales
-- [ ] Catálogos disponibles y consumidos/validados correctamente
-- [ ] Contratos REST consistentes y estables
-- [ ] Validación de inputs (requeridos, rangos, catálogos)
-- [ ] Manejo consistente de errores (formato único)
-- [ ] README reproducible y completo
-- [ ] CI/CD ejecuta correctamente
+- [x] Catálogos disponibles y consumidos/validados correctamente
+- [x] Contratos REST consistentes y estables
+- [x] Validación de inputs (requeridos, rangos, catálogos)
+- [x] Manejo consistente de errores (formato único)
+- [x] README reproducible y completo
+- [x] CI/CD ejecuta correctamente
 
 ### Fullstack — Backend
-- [ ] POST /quotes crea cotización + prima + breakdown; persiste
-- [ ] GET /quotes/{id} retorna cotización persistida
-- [ ] POST /policies emite póliza; requiere token (401/403)
-- [ ] GET /policies/{id} retorna póliza; requiere token
-- [ ] POST /auth/login retorna token JWT
-- [ ] Catálogos expuestos por API y validados en POST /quotes
-- [ ] ORM: schema + seed en repositorio
-- [ ] Swagger/OpenAPI disponible
-- [ ] Tests mínimos API
+- [x] POST /quotes crea cotización + prima + breakdown; persiste
+- [x] GET /quotes/{id} retorna cotización persistida
+- [x] POST /policies emite póliza; requiere token (401/403)
+- [x] GET /policies/{id} retorna póliza; requiere token
+- [x] POST /auth/login retorna token JWT
+- [x] Catálogos expuestos por API y validados en POST /quotes
+- [x] ORM: schema + seed en repositorio
+- [x] Swagger/OpenAPI disponible
+- [x] Tests mínimos API
 
 ### Fullstack — Frontend
-- [ ] Flujo completo UI → API real: cotizar → ver resultado → emitir póliza
-- [ ] No emitir/consultar pólizas sin autenticación
-- [ ] Catálogos consumidos desde backend real
-- [ ] Errores de API reflejados en UI
-- [ ] Tests mínimos UI
-- [ ] Formulario con carga de catálogos y validaciones
-- [ ] Prima y breakdown visibles
-- [ ] Estados de carga y errores visibles
-- [ ] Accesibilidad básica
+- [x] Flujo completo UI → API real: cotizar → ver resultado → emitir póliza
+- [x] No emitir/consultar pólizas sin autenticación
+- [x] Catálogos consumidos desde backend real
+- [x] Errores de API reflejados en UI
+- [x] Tests mínimos UI
+- [x] Formulario con carga de catálogos y validaciones
+- [x] Prima y breakdown visibles
+- [x] Estados de carga y errores visibles
+- [x] Accesibilidad básica

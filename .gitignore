@@ -44,6 +44,9 @@ next-env.d.ts
 # Vercel
 .vercel
 
+# Docs
+docs/
+
 # Misc
 *.pem
 .pnp
