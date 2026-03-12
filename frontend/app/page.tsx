@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { ArrowRight, Car, HeartPulse, Home } from 'lucide-react';
@@ -7,11 +9,15 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative w-full min-h-162.5 flex items-center bg-linear-to-br from-[#eae4d5] via-[#e2dbce] to-[#d6cbbc] pt-20">
-        {/* Placeholder para la imagen de fondo */}
-        {/* <div className="absolute inset-0 z-0 opacity-80 mix-blend-multiply">
-          <Image src="/hero-bg.jpg" fill className="object-cover" alt="Hero background" priority />
-        </div> */}
+      <section className="relative w-full min-h-162.5 max-h-150 flex items-center bg-linear-to-br from-[#eae4d5] via-[#e2dbce] to-[#d6cbbc] pt-20 overflow-hidden">
+        {/* Background image — anchored bottom so full illustration is visible */}
+        <div
+          className="absolute inset-0 z-0 opacity-25 mix-blend-multiply bg-bottom bg-no-repeat"
+          style={{
+            backgroundImage: "url('/bg-seguros.jpg')",
+            backgroundSize: 'auto',
+          }}
+        />
         <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-start gap-6">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-500 uppercase tracking-wider shadow-sm">
             SEGUROS INTELIGENTES
@@ -29,7 +35,7 @@ export default function HomePage() {
             para tu tranquilidad.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full sm:w-auto">
             <Link
               href="/quote"
               className={cn(

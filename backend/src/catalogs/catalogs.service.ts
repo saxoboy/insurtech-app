@@ -19,7 +19,7 @@ export class CatalogsService {
       where: {
         insuranceType: { code: insuranceType },
       },
-      orderBy: { name: 'asc' },
+      orderBy: { id: 'asc' },
     });
     return {
       items: coverages.map(({ code, name }) => ({ code, name })),

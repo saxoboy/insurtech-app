@@ -14,25 +14,25 @@ export function Footer() {
 
         <nav className="flex flex-wrap justify-center items-center gap-6">
           <Link
-            href="/privacidad"
+            href="#"
             className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
           >
             Privacidad
           </Link>
           <Link
-            href="/terminos"
+            href="#"
             className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
           >
             Términos
           </Link>
           <Link
-            href="/faq"
+            href="#"
             className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
           >
             FAQ
           </Link>
           <Link
-            href="/contacto"
+            href="#"
             className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
           >
             Contacto

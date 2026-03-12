@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { isAuthenticated, logout, hydrate } = useAuthStore();
+  const { isAuthenticated, isHydrated, logout, hydrate } = useAuthStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const [prevPathname, setPrevPathname] = useState(pathname);
 
@@ -64,7 +64,7 @@ export function Navbar() {
           </Link>
 
           {/* Authenticated Links (Center/Left shifted) */}
-          {isAuthenticated && (
+          {isHydrated && isAuthenticated && (
             <nav className="hidden md:flex items-center gap-6 ml-8">
               <Link
                 href="/quote"
@@ -105,7 +105,7 @@ export function Navbar() {
         </div>
 
         {/* Center Links for Unauthenticated */}
-        {!isAuthenticated && (
+        {isHydrated && !isAuthenticated && (
           <nav className="hidden md:flex items-center gap-8">
             <Link
               href="/"
@@ -117,13 +117,13 @@ export function Navbar() {
               Inicio
             </Link>
             <Link
-              href="/seguros"
+              href="#"
               className="text-sm font-semibold text-slate-600 transition-colors hover:text-[#409cf0]"
             >
               Seguros
             </Link>
             <Link
-              href="/nosotros"
+              href="#"
               className="text-sm font-semibold text-slate-600 transition-colors hover:text-[#409cf0]"
             >
               Nosotros
@@ -133,7 +133,9 @@ export function Navbar() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-4">
-          {isAuthenticated ? (
+          {!isHydrated ? (
+            <div className="hidden sm:flex items-center gap-4 w-48" />
+          ) : isAuthenticated ? (
             <div className="hidden sm:flex items-center gap-4">
               <button className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-100/80 text-slate-600 hover:bg-slate-200 transition-colors">
                 <Bell className="h-5 w-5" />
@@ -203,7 +205,7 @@ export function Navbar() {
       </div>
 
       {/* Mobile nav */}
-      {menuOpen && (
+      {menuOpen && isHydrated && (
         <nav
           id="mobile-nav"
           className="flex flex-col gap-1 border-t border-slate-200 bg-white px-4 py-4 md:hidden absolute w-full shadow-lg"

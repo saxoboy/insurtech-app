@@ -4,6 +4,7 @@ import { api, type ApiError } from './api';
 interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
+  isHydrated: boolean;
   isLoading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
@@ -14,6 +15,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   isAuthenticated: false,
+  isHydrated: false,
   isLoading: false,
   error: null,
 
@@ -52,7 +54,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (typeof window === 'undefined') return;
     const token = localStorage.getItem('accessToken');
     if (token) {
-      set({ token, isAuthenticated: true });
+      set({ token, isAuthenticated: true, isHydrated: true });
+    } else {
+      set({ isHydrated: true });
     }
   },
 }));
