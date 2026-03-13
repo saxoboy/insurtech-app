@@ -7,6 +7,6 @@
     "**/*spec.ts",
     "vitest.config.ts",
     "prisma.config.ts",
-    "prisma/seed.ts"
+    "prisma/**/*spec.ts"
   ]
 }
