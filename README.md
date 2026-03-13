@@ -179,10 +179,10 @@ El seed (`backend/prisma/seed.ts`) carga:
 - 3 tipos de seguro
 - 9 combinaciones de coberturas (3 por tipo)
 - 6 ubicaciones (provincias de Ecuador)
-- Usuario de prueba: `user@example.com` / `password`
+- Usuario de prueba: `demouser@correo.com` / `password`
 
 ```bash
-# Ejecutar seed manualmente
+# Ejecutar seed manualmente (local)
 cd backend && npx prisma db seed
 ```
 
@@ -235,6 +235,68 @@ npm run test         # Unitarios: premium-calculator, quote-schema, QuoteForm co
 GitHub Actions ejecuta automáticamente en push/PR a `main`:
 1. Backend: lint → unit tests → E2E tests (con PostgreSQL) → build
 2. Frontend: lint → tests → build
+3. Deploy: dispara el deploy en Render **solo si ambos jobs pasan** (solo en push a `main`)
+
+---
+
+## Deploy en Producción
+
+| Componente | Plataforma | URL |
+|-----------|------------|-----|
+| Backend | Render (Docker, plan Free) | `https://<servicio>.onrender.com` |
+| Frontend | Vercel | `https://insurtech-app-nine.vercel.app` |
+| Base de datos | Render PostgreSQL | Gestionada por Render |
+
+### Flujo de deploy
+
+```
+git push main
+    └── GitHub Actions
+            ├── backend:  lint → tests → E2E → build  ✓
+            ├── frontend: lint → tests → build          ✓
+            └── deploy:   curl RENDER_DEPLOY_HOOK_URL
+                              └── Render
+                                    ├── preDeployCommand: npx prisma migrate deploy
+                                    │                    && node dist/prisma/seed.js
+                                    └── CMD: node dist/main
+```
+
+El deploy a Render solo se dispara si todos los tests pasan. Las migraciones y el seed corren automáticamente antes de cada arranque del servidor.
+
+### Variables de entorno en producción
+
+**Render** (configurar manualmente en el dashboard → Environment):
+
+| Variable | Descripción |
+|----------|-------------|
+| `DATABASE_URL` | URL interna de la BD de Render |
+| `JWT_SECRET` | Clave secreta para firmar JWT |
+| `JWT_EXPIRES_IN` | Expiración del token (ej. `1d`) |
+| `CORS_ORIGIN` | URL del frontend en Vercel |
+
+**GitHub Actions** (configurar en Settings → Secrets):
+
+| Secret | Descripción |
+|--------|-------------|
+| `RENDER_DEPLOY_HOOK_URL` | URL del deploy hook de Render |
+
+**Vercel** (configurar en el dashboard):
+
+| Variable | Descripción |
+|----------|-------------|
+| `NEXT_PUBLIC_API_URL` | URL pública del backend en Render |
+
+### Ejecutar el seed manualmente en producción
+
+Si necesitas poblar la base de datos desde local (por ejemplo, en el primer deploy):
+
+```bash
+cd backend
+DATABASE_URL="postgresql://user:pass@dpg-xxx.oregon-postgres.render.com/db?sslmode=require" \
+  npx ts-node prisma/seed.ts
+```
+
+> Usa la **External Database URL** de Render (no la interna). Incluye `?sslmode=require`.
 
 ---
 
