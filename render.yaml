@@ -16,3 +16,5 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: CORS_ORIGIN
+        value: https://insurtech-app-nine.vercel.app
