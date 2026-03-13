@@ -55,6 +55,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (typeof window === 'undefined') return;
     const token = localStorage.getItem('accessToken');
     if (token) {
+      document.cookie = `accessToken=${token}; path=/; SameSite=Strict`;
       set({ token, isAuthenticated: true, isHydrated: true });
     } else {
       set({ isHydrated: true });
